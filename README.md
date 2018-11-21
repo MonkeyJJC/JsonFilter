@@ -21,3 +21,7 @@
 
 - [controller层调用](/src/main/java/com/json/filter/controller/TestController.java) 
 
+目前bug：
+使用@ResponseBody会跳过拦截，不进行过滤操作
+不使用@ResponseBody，会导致404，因为会默认去寻找模板
+

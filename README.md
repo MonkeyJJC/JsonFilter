@@ -10,16 +10,24 @@
     id: "xxxx",
     title: "xxxx",
     content: "xxxx",
-    tag: {
-       id: "",
-       tagName: ""
+}
+
+```
+    @GetMapping("user")
+    @SerializeField(clazz = User.class, includes = {"name", "id"})
+    public User user() {
+        User user = new User(1L, "jjc", "123456");
+        return user;
     }
-}
-筛选过滤结果：
+```
+
+结果输出：
+
 {
-    id: "xxxx",
-    title: "xxxx"
+    id: 1,
+    name: "jjc"
 }
+
 
 
 - [controller层调用](/src/main/java/com/monkey/jsonfilter/controller/Demo.java) 

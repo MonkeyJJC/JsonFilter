@@ -1,5 +1,19 @@
 # JsonFilter
-动态的去返回 Json 数据，通过注解方式进行过滤
+
+- 自动将controller返回的bean包装为要求的Json格式：
+
+{
+    data: {
+        id: "1",
+        title: "Hello World",
+        content: "The first step"
+    },
+    error: null
+}
+
+
+
+- 动态的去返回 Json 数据，通过注解方式进行过滤
 
 实现如下效果的自动筛选：
 

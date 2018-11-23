@@ -1,7 +1,7 @@
 # JsonFilter
 
-- 自动将controller返回的bean包装为要求的Json格式：
-例如bean对象new Article("1", "Hello World", "The first step")，自动包装为
+自动将controller返回的bean包装为要求的Json格式：
+- 例如bean对象new Article("1", "Hello World", "The first step")，自动包装为
 {
     data: {
         id: "1",
@@ -13,9 +13,9 @@
 
 
 
-- 动态的去返回 Json 数据，通过注解方式进行过滤
+动态的去返回 Json 数据，通过注解方式进行过滤
 
-实现如下效果的自动筛选：
+-实现如下效果的自动筛选：
 
 {
     id: "xxxx",

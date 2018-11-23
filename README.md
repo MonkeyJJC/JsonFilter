@@ -6,11 +6,25 @@
 
 -实现如下效果的自动筛选：
 
+```
 {
     id: "xxxx",
     title: "xxxx",
-    content: "xxxx",
+    content: "xxxx"
 }
+```
+
+筛选后：
+
+```
+{
+    id: "xxxx",
+    title: "xxxx"
+}
+```
+
+- [controller层调用](/src/main/java/com/monkey/jsonfilter/controller/Demo.java) 
+
 
 ```
     @GetMapping("user")
@@ -23,14 +37,13 @@
 
 结果输出：
 
+```
 {
     id: 1,
     name: "jjc"
 }
+```
 
-
-
-- [controller层调用](/src/main/java/com/monkey/jsonfilter/controller/Demo.java) 
 
 坑：
 - （1）使用@ResponseBody会跳过拦截，不进行过滤操作

@@ -1,5 +1,7 @@
 package com.monkey.jsonfilter.advice;
 
+import com.monkey.jsonfilter.annotation.MoreSerializeField;
+import com.monkey.jsonfilter.annotation.MultiSerializeField;
 import com.monkey.jsonfilter.annotation.SerializeField;
 import com.monkey.jsonfilter.bean.JsonFilterObject;
 import com.monkey.jsonfilter.exception.IncludesAndExcludesConflictException;
@@ -43,7 +45,9 @@ public class JsonFilterResponseBodyAdvice implements ResponseBodyAdvice {
         if (null == object) {
             return null;
         }
-        if (!methodParameter.getMethod().isAnnotationPresent(SerializeField.class)) {
+        if (!methodParameter.getMethod().isAnnotationPresent(SerializeField.class) &&
+                !methodParameter.getMethod().isAnnotationPresent(MultiSerializeField.class) &&
+                !methodParameter.getMethod().isAnnotationPresent(MoreSerializeField.class)) {
             return object;
         }
         /**
@@ -58,6 +62,19 @@ public class JsonFilterResponseBodyAdvice implements ResponseBodyAdvice {
             Object obj = methodParameter.getMethod().getAnnotation(SerializeField.class);
             handleAnnotation(SerializeField.class, obj, jsonFilterObject);
         }
+        if (methodParameter.getMethod().isAnnotationPresent(MultiSerializeField.class)) {
+            Object obj = methodParameter.getMethod().getAnnotation(MultiSerializeField.class);
+            handleAnnotation(MultiSerializeField.class, obj, jsonFilterObject);
+        }
+        if (methodParameter.getMethod().isAnnotationPresent(MoreSerializeField.class)) {
+            MoreSerializeField moreSerializeField = methodParameter.getMethod().getAnnotation(MoreSerializeField.class);
+            SerializeField[] serializeFields = moreSerializeField.value();
+            if (serializeFields.length > 0) {
+                for (int i = 0; i < serializeFields.length; i++) {
+                    handleAnnotation(SerializeField.class, serializeFields[i], jsonFilterObject);
+                }
+            }
+        }
         /**
          * 不进行set，返回null，因为未初始化
          */
@@ -71,6 +88,16 @@ public class JsonFilterResponseBodyAdvice implements ResponseBodyAdvice {
         Class objClass = null;
         if (clazz.equals(SerializeField.class)) {
             SerializeField serializeField = (SerializeField) object;
+            /**
+             * 获取注解使用处的参数信息，如@SerializeField(clazz = Address.class,includes = {"school", "home", "user"})
+             * 获取clazz及includes等信息
+             */
+            includes = serializeField.includes();
+            excludes = serializeField.excludes();
+            objClass = serializeField.clazz();
+        }
+        if (clazz.equals(MultiSerializeField.class)) {
+            MultiSerializeField serializeField = (MultiSerializeField) object;
             /**
              * 获取注解使用处的参数信息，如@SerializeField(clazz = Address.class,includes = {"school", "home", "user"})
              * 获取clazz及includes等信息

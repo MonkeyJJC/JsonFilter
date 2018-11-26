@@ -4,7 +4,7 @@
 
 动态的去返回 Json 数据，通过注解方式进行过滤
 
--实现如下效果的自动筛选：
+-(简单筛选)实现如下效果的自动筛选：
 
 ```
 {
@@ -39,6 +39,46 @@
 
 ```
 {
+    id: 1,
+    name: "jjc"
+}
+```
+
+(嵌套类字段的筛选)
+
+```
+    @GetMapping("userMulti")
+    @SerializeField(clazz = User.class, includes = {"name", "id", "addresses"})
+    /**
+     * 进行二次过滤，如使用相同注解SerializeField，Advice处只会判定执行一次
+     */
+    @MultiSerializeField(clazz = Address.class, excludes = {"user"})
+    public User userMulti() {
+        User user = new User(1L, "jjc", "123456");
+        List<Address> addresses = new ArrayList<>();
+        Address a1 = new Address("liuyis's home", "liuyis's school", user);
+        Address a2 = new Address("liuyis's home2", "liuyis's school2", user);
+        addresses.add(a1);
+        addresses.add(a2);
+        user.setAddresses(addresses);
+        return user;
+    }
+```
+
+结果输出：
+
+```
+{
+    addresses: [
+        {
+            home: "liuyis's home",
+            school: "liuyis's school"
+        },
+        {
+            home: "liuyis's home2",
+            school: "liuyis's school2"
+        }
+    ],
     id: 1,
     name: "jjc"
 }

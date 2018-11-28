@@ -22,10 +22,10 @@ public class Demo {
     @GetMapping("user")
     @SerializeField(clazz = User.class, includes = {"name", "id"})
     public User user() {
-        User user = new User(1L, "jjc", "123456");
+        User user = new User(2L, "JJC", "123456");
         List<Address> addresses = new ArrayList<>();
-        Address a1 = new Address("liuyis's home", "liuyis's school", user);
-        Address a2 = new Address("liuyis's home2", "liuyis's school2", user);
+        Address a1 = new Address("JJC's home", "JJC's school", user);
+        Address a2 = new Address("JJC's home2", "JJC's school2", user);
         addresses.add(a1);
         addresses.add(a2);
         user.setAddresses(addresses);
@@ -39,31 +39,26 @@ public class Demo {
      */
     @MultiSerializeField(clazz = Address.class, excludes = {"user"})
     public User userMulti() {
-        User user = new User(1L, "jjc", "123456");
+        User user = new User(1L, "JJC", "123456");
         List<Address> addresses = new ArrayList<>();
-        Address a1 = new Address("liuyis's home", "liuyis's school", user);
-        Address a2 = new Address("liuyis's home2", "liuyis's school2", user);
+        Address a1 = new Address("JJC's home", "JJC's school", user);
         addresses.add(a1);
-        addresses.add(a2);
         user.setAddresses(addresses);
         return user;
     }
 
-    @GetMapping("/address")
-    //use @MoreSerializeField annotation to customize mutiple POJO json output *_*
-    //add @SerializeField annotation as many as you want :)
+    @GetMapping("address")
     @MoreSerializeField({
             @SerializeField(clazz = Address.class,includes = {"school", "home", "user"}),
             @SerializeField(clazz = User.class, includes = {"id", "name"})})
     public Address address2(){
-        User user = new User(1L, "liuyis", "123456");
+        User user = new User(1L, "JJC", "123456");
         List<Address> addresses = new ArrayList<>();
-        Address a1 = new Address("liuyis's home", "liuyis's school", user);
-        Address a2 = new Address("liuyis's home2", "liuyis's school2", user);
+        Address a1 = new Address("JJC's home", "JJC's school", user);
+        Address a2 = new Address("JJC's home2", "JJC's school2", user);
         addresses.add(a1);
         addresses.add(a2);
         user.setAddresses(addresses);
-
         return a1;
     }
 }

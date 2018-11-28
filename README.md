@@ -37,10 +37,14 @@
 
 结果输出：
 
-```
+```$xslt
 {
-    id: 1,
-    name: "jjc"
+    code: 200,
+    data: {
+        id: 2,
+        name: "JJC"
+    },
+    msg: "success"
 }
 ```
 
@@ -54,12 +58,10 @@
      */
     @MultiSerializeField(clazz = Address.class, excludes = {"user"})
     public User userMulti() {
-        User user = new User(1L, "jjc", "123456");
+        User user = new User(1L, "JJC", "123456");
         List<Address> addresses = new ArrayList<>();
-        Address a1 = new Address("liuyis's home", "liuyis's school", user);
-        Address a2 = new Address("liuyis's home2", "liuyis's school2", user);
+        Address a1 = new Address("JJC's home", "JJC's school", user);
         addresses.add(a1);
-        addresses.add(a2);
         user.setAddresses(addresses);
         return user;
     }
@@ -69,18 +71,18 @@
 
 ```
 {
-    addresses: [
-        {
-            home: "liuyis's home",
-            school: "liuyis's school"
-        },
-        {
-            home: "liuyis's home2",
-            school: "liuyis's school2"
-        }
-    ],
-    id: 1,
-    name: "jjc"
+    code: 200,
+    data: {
+        addresses: [
+            {
+                home: "JJC's home",
+                school: "JJC's school"
+            }
+        ],
+        id: 1,
+        name: "JJC"
+    },
+    msg: "success"
 }
 ```
 

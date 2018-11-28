@@ -5,11 +5,13 @@ import com.monkey.jsonfilter.annotation.MultiSerializeField;
 import com.monkey.jsonfilter.annotation.SerializeField;
 import com.monkey.jsonfilter.bean.JsonFilterObject;
 import com.monkey.jsonfilter.exception.IncludesAndExcludesConflictException;
+import com.monkey.jsonfilter.result.ReturnResult;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.Arrays;
@@ -43,12 +45,12 @@ public class JsonFilterResponseBodyAdvice implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object object, MethodParameter methodParameter, MediaType mediaType, Class converterType, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         JsonFilterObject jsonFilterObject = new JsonFilterObject();
         if (null == object) {
-            return null;
+            return ReturnResult.sucess(object);
         }
         if (!methodParameter.getMethod().isAnnotationPresent(SerializeField.class) &&
                 !methodParameter.getMethod().isAnnotationPresent(MultiSerializeField.class) &&
                 !methodParameter.getMethod().isAnnotationPresent(MoreSerializeField.class)) {
-            return object;
+            return ReturnResult.sucess(object);
         }
         /**
          * 处理类进行过滤处理
@@ -78,7 +80,7 @@ public class JsonFilterResponseBodyAdvice implements ResponseBodyAdvice {
         /**
          * 不进行set，返回null，因为未初始化
          */
-        jsonFilterObject.setObject(object);
+        jsonFilterObject.setObject(ReturnResult.sucess(object));
         return jsonFilterObject;
     }
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.monkey.jsonfilter.bean.JsonFilterObject;
 import com.monkey.jsonfilter.filter.SimpleSerializerFilter;
+import com.monkey.jsonfilter.result.ReturnResult;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -48,7 +49,7 @@ public class JsonFilterHttpMessageConverter extends FastJsonHttpMessageConverter
      */
     @Override
     protected void writeInternal(Object obj, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
-        if(obj instanceof JsonFilterObject){
+        if (obj instanceof JsonFilterObject) {
             JsonFilterObject jsonFilterObject = (JsonFilterObject) obj;
             OutputStream out = outputMessage.getBody();
             SimpleSerializerFilter simpleSerializerFilter = new SimpleSerializerFilter(jsonFilterObject.getIncludes(), jsonFilterObject.getExcludes());
@@ -59,7 +60,7 @@ public class JsonFilterHttpMessageConverter extends FastJsonHttpMessageConverter
             String text = JSON.toJSONString(jsonFilterObject.getObject(), simpleSerializerFilter, features);
             byte[] bytes = text.getBytes(this.charset);
             out.write(bytes);
-        }else {
+        } else {
             /**
              * 未声明@SerializeField注解
              */
